@@ -23,8 +23,13 @@ class ReceiveServer(StreamServer):
                 self.logger.info("client disconnected")
                 break
             line = line.strip()
-            mtr.feed(line)
             self.logger.debug(line)
+
+            try:
+                mtr.feed(line)
+            except ValueError:
+                #skip
+                pass
 
         for l in mtr.rows:
             self.logger.debug('%r' % l)
@@ -34,5 +39,4 @@ class ReceiveServer(StreamServer):
         if not self.closed:
             self.logger.info("Close Server")
             StreamServer.close(self)
-
 

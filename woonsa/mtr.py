@@ -17,12 +17,7 @@ class Mtr(object):
 
     def feed(self, raw):
         line = MtrLine(raw)
-        if line.type == 'h':
-            self.rows[line.pos] = [line.val, None, []]
-        elif line.type == 'd':
-            self.rows[line.pos][1] = line.val
-        elif line.type == 'p':
-            self.rows[line.pos][2].append(line.val)
+        self._rows[line.pos] = line
 
     @property
     def rows(self):
@@ -33,23 +28,48 @@ class MtrLine(object):
         if len(raw) == 0:
             raise TypeError('Invalid MTR Output')
 
-        _type = raw[0]
-        if _type != 'h' and _type != 'p' and _type != 'd':
-            raise TypeError('Invalid MTR Output')
-        _type, _pos, _val = raw.split(' ')
+        _pos, _name, _loss, _retr, _xmit, _best, _avg, _worst = raw.split(' ')
 
-        self._type = _type
-        self._pos = int(_pos)
-        self._val = _val if _type != 'p' else int(_val)/1000.0
-
-    @property
-    def type(self):
-        return self._type
+        self._pos = int(_pos)-1
+        self._name = _name
+        self._loss = float(_loss)/1000.0
+        self._retr = int(_retr)
+        self._xmit = int(_xmit)
+        self._best = float(_best)
+        self._avg = float(_avg)
+        self._worst = float(_worst)
 
     @property
     def pos(self):
         return self._pos
 
     @property
-    def val(self):
-        return self._val
+    def name(self):
+        return self._name
+
+    @property
+    def loss(self):
+        return self._loss
+
+    @property
+    def returned(self):
+        return self._retr
+
+    @property
+    def emit(self):
+        return self._xmit
+
+    @property
+    def best(self):
+        return self._best
+
+    @property
+    def avg(self):
+        return self._avg
+
+    @property
+    def worst(self):
+        return self._worst
+
+    def __repr__(self):
+        return '<MtrLine %s (%.2f%%, %.2f, %.2f, %.2f)>' % (self.name, self.loss, self.best, self.avg, self.worst)
