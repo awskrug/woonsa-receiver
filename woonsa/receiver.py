@@ -17,6 +17,7 @@ class ReceiveServer(StreamServer):
     def recv_all(self, socket, addr):
         mtr = Mtr()
         sockf = socket.makefile()
+        client_id = None
         while True:
             line = sockf.readline()
             if not line:
@@ -24,6 +25,11 @@ class ReceiveServer(StreamServer):
                 break
             line = line.strip()
             self.logger.debug(line)
+
+            if not client_id:
+                client_id = line
+                self.logger.info("Client id: %s" % client_id)
+                continue
 
             try:
                 mtr.feed(line)
