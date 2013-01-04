@@ -1,3 +1,5 @@
-https://github.com/downloads/SiteSupport/gevent/gevent-1.0rc2.tar.gz
+PyYAML==3.10
+-e git://github.com/boto/boto.git@104dacbd1fa76492c4b7419287f7dc8721eafdd8#egg=boto-dev
+gevent==1.0rc2
 greenlet==0.4.0
 wsgiref==0.1.2

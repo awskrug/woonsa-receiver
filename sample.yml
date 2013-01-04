@@ -1,0 +1,10 @@
+# aws
+aws:
+    aws_access_key_id:  <aws access key>
+    aws_secret_access_key: <aws secret key>
+    aws_region: ap-northeast-1
+    aws_dynamo_db_schema: woonsa
+
+carbon:
+    host: localhost
+    port: 2003
